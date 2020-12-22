@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -62,17 +62,19 @@ namespace PivotController.Controllers
                 {
                     cacheEntry.SetSize(1);
                     cacheEntry.AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(60);
-
                     // Here, you can refer different kinds of data sources. We've bound a collection in this illustration.
                     return new DataSource.PivotViewData().GetVirtualData();
 
                     // EXAMPLE:
-                    // Other data sources, such as DataTable, CSV, JSON, etc., can be bound as shown below.
-                    // return new DataSource.BusinessObjectsDataView().GetDataTable();
-                    // return new DataSource.PivotJSONData().ReadJSONData(_hostingEnvironment.ContentRootPath + "\\DataSource\\sales-analysis.json");
-                    // return new DataSource.PivotCSVData().ReadCSVData(_hostingEnvironment.ContentRootPath + "\\DataSource\\sales.csv");
-                    // return new DataSource.PivotJSONData().ReadJSONData("http://cdn.syncfusion.com/data/sales-analysis.json");
-                    // return new DataSource.PivotCSVData().ReadCSVData("http://cdn.syncfusion.com/data/sales-analysis.csv");
+                    // Other data sources, such as ExpandoObject, DynamicObject, DataTable, CSV, JSON, etc., can be bound as shown below.
+                    //return new DataSource.PivotDynamicData().GetDynamicData();
+                    //return new DataSource.PivotExpandoData().GetExpandoData();
+                    //return new DataSource.GroupData().GetGroupData();
+                    //return new DataSource.BusinessObjectsDataView().GetDataTable();
+                    //return new DataSource.PivotJSONData().ReadJSONData(_hostingEnvironment.ContentRootPath + "\\DataSource\\sales-analysis.json");
+                    //return new DataSource.PivotCSVData().ReadCSVData(_hostingEnvironment.ContentRootPath + "\\DataSource\\sales.csv");
+                    //return new DataSource.PivotJSONData().ReadJSONData("http://cdn.syncfusion.com/data/sales-analysis.json");
+                    //return new DataSource.PivotCSVData().ReadCSVData("http://cdn.syncfusion.com/data/sales-analysis.csv");
                 });
         }
 
