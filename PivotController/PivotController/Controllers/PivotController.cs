@@ -23,7 +23,6 @@ namespace PivotController.Controllers
             _hostingEnvironment = environment;
         }
 
-        // POST api/<controller>
         [Route("/api/pivot/post")]
         [HttpPost]
         public async Task<object> Post([FromBody]object args)
@@ -63,8 +62,11 @@ namespace PivotController.Controllers
                 {
                     cacheEntry.SetSize(1);
                     cacheEntry.AbsoluteExpiration = DateTimeOffset.UtcNow.AddMinutes(60);
-                    // Here you need to return raw data
+                    // Here, you can refer different kinds of data sources. We've bound a collection in this illustration.
                     return new DataSource.PivotViewData().GetVirtualData();
+
+                    // EXAMPLE:
+                    // Other data sources, such as ExpandoObject, DynamicObject, DataTable, CSV, JSON, etc., can be bound as shown below.
                     //return new DataSource.PivotDynamicData().GetDynamicData();
                     //return new DataSource.PivotExpandoData().GetExpandoData();
                     //return new DataSource.GroupData().GetGroupData();
