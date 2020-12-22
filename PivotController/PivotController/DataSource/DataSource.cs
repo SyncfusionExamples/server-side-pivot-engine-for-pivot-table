@@ -1104,16 +1104,14 @@ namespace PivotController.Controllers
             {
                 List<PivotViewData> VirtualData = new List<PivotViewData>();
 
-                for (int i = 1; i <= 1000000; i++)
+                for (int i = 1; i <= 100; i++)
                 {
                     PivotViewData p = new PivotViewData
                     {
-                        ProductID = "PRO-" + (1000000 + i),
+                        ProductID = "PRO-" + (100 + i),
                         Year = (new string[] { "FY 2015", "FY 2016", "FY 2017", "FY 2018", "FY 2019" })[new Random().Next(5)],
-                        Country = "USA",
-                        Product = "Bike",
-                        //Country = (new string[] { "Canada", "France", "Australia", "Germany", "France" })[new Random().Next(5)],
-                        //Product = (new string[] { "Car", "Van", "Bike", "Flight", "Bus" })[new Random().Next(5)],
+                        Country = (new string[] { "Canada", "France", "Australia", "Germany", "France" })[new Random().Next(5)],
+                        Product = (new string[] { "Car", "Van", "Bike", "Flight", "Bus" })[new Random().Next(5)],
                         Price = (3.4 * i) + 500,
                         Sold = (i * 15) + 10
                     };
