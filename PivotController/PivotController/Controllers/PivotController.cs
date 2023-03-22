@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
-using Syncfusion.Blazor.PivotView;
+using Syncfusion.EJ2.PivotView;
 
 namespace PivotController.Controllers
 {
