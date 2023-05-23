@@ -39,30 +39,18 @@ namespace PivotController.Controllers
             }
             else if (param.Action == "onExcelExport" || param.Action == "onCsvExport")
             {
-                if (param.InternalProperties.EnableVirtualization && param.InternalProperties.ExportAllPages)
+                EngineProperties engine = await GetEngine(param);
+                if (param.InternalProperties.EnableVirtualization && param.ExportAllPages)
                 {
-                    EngineProperties engine = await GetEngine(param);
                     engine = await PivotEngine.PerformAction(engine, param);
-                    if (param.Action == "onCsvExport")
-                    {
-                        return excelExport.CsvExport(engine, param.ExcelExportProperties);
-                    }
-                    else
-                    {
-                        return excelExport.ExportToExcel(engine, param.ExcelExportProperties);
-                    }
+                }
+                if(param.Action == "onExcelExport")
+                {
+                    return excelExport.ExportToExcel(engine, "Excel");
                 }
                 else
                 {
-                    EngineProperties engine = await GetEngine(param);
-                    if (param.Action == "onCsvExport")
-                    {
-                        return excelExport.CsvExport(engine, param.ExcelExportProperties);
-                    }
-                    else
-                    {
-                        return excelExport.ExportToExcel(engine, param.ExcelExportProperties);
-                    }
+                    return excelExport.ExportToExcel(engine, "Csv");
                 }
             }
             else
@@ -70,6 +58,7 @@ namespace PivotController.Controllers
                 return await GetPivotValues(param);
             }
         }
+
         public async Task<EngineProperties> GetEngine(FetchData param)
         {
             isRendered = false;
