@@ -26,7 +26,7 @@ namespace PivotController.Controllers
 
         [Route("/api/pivot/post")]
         [HttpPost]
-        public async Task<object> Post([FromBody] object args)
+        public async Task<object> Post([FromBody]object args)
         {
             FetchData param = JsonConvert.DeserializeObject<FetchData>(args.ToString());
             if (param.Action == "fetchFieldMembers")
