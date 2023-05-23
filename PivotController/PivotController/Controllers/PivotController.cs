@@ -16,6 +16,7 @@ namespace PivotController.Controllers
         private IWebHostEnvironment _hostingEnvironment;
         private bool isRendered;
         private PivotEngine<DataSource.PivotViewData> PivotEngine = new PivotEngine<DataSource.PivotViewData>();
+        private ExcelExport excelExport = new ExcelExport();
 
         public PivotController(IMemoryCache cache, IWebHostEnvironment environment)
         {
@@ -25,7 +26,7 @@ namespace PivotController.Controllers
 
         [Route("/api/pivot/post")]
         [HttpPost]
-        public async Task<object> Post([FromBody]object args)
+        public async Task<object> Post([FromBody] object args)
         {
             FetchData param = JsonConvert.DeserializeObject<FetchData>(args.ToString());
             if (param.Action == "fetchFieldMembers")
@@ -35,6 +36,34 @@ namespace PivotController.Controllers
             else if (param.Action == "fetchRawData")
             {
                 return await GetRawData(param);
+            }
+            else if (param.Action == "onExcelExport" || param.Action == "onCsvExport")
+            {
+                if (param.InternalProperties.EnableVirtualization && param.InternalProperties.ExportAllPages)
+                {
+                    EngineProperties engine = await GetEngine(param);
+                    engine = await PivotEngine.PerformAction(engine, param);
+                    if (param.Action == "onCsvExport")
+                    {
+                        return excelExport.CsvExport(engine, param.ExcelExportProperties);
+                    }
+                    else
+                    {
+                        return excelExport.ExportToExcel(engine, param.ExcelExportProperties);
+                    }
+                }
+                else
+                {
+                    EngineProperties engine = await GetEngine(param);
+                    if (param.Action == "onCsvExport")
+                    {
+                        return excelExport.CsvExport(engine, param.ExcelExportProperties);
+                    }
+                    else
+                    {
+                        return excelExport.ExportToExcel(engine, param.ExcelExportProperties);
+                    }
+                }
             }
             else
             {
