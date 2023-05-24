@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using Syncfusion.EJ2.Pivot;
+using Syncfusion.XlsIO;
 
 namespace PivotController.Controllers
 {
@@ -17,6 +18,7 @@ namespace PivotController.Controllers
         private bool isRendered;
         private PivotEngine<DataSource.PivotViewData> PivotEngine = new PivotEngine<DataSource.PivotViewData>();
         private ExcelExport excelExport = new ExcelExport();
+        private PivotViewEvents pivotViewEvents = new PivotViewEvents();
 
         public PivotController(IMemoryCache cache, IWebHostEnvironment environment)
         {
@@ -40,22 +42,44 @@ namespace PivotController.Controllers
             else if (param.Action == "onExcelExport" || param.Action == "onCsvExport")
             {
                 EngineProperties engine = await GetEngine(param);
+                pivotViewEvents.ExcelHeaderQueryCellInfo = ExcelHeaderQueryCellInfo;
+                pivotViewEvents.ExcelQueryCellInfo = ExcelQueryCellInfo;
                 if (param.InternalProperties.EnableVirtualization && param.ExportAllPages)
                 {
                     engine = await PivotEngine.PerformAction(engine, param);
                 }
                 if(param.Action == "onExcelExport")
                 {
-                    return excelExport.ExportToExcel(engine, "Excel");
+                    return excelExport.ExportToExcel("Excel", engine, pivotViewEvents, param.ExcelExportProperties);
                 }
                 else
                 {
-                    return excelExport.ExportToExcel(engine, "Csv");
+                    return excelExport.ExportToExcel("CSV", engine);
                 }
             }
             else
             {
                 return await GetPivotValues(param);
+            }
+        }
+
+        private void ExcelHeaderQueryCellInfo(ExcelHeaderQueryCellInfoEventArgs excel)
+        {
+            if (excel.Cell.Value == "FY 2015")
+            {
+                excel.Cell.CellStyle.Font.Size = 10;
+                excel.Cell.CellStyle.ColorIndex = ExcelKnownColors.Red;
+                excel.Cell.CellStyle.Font.Color = ExcelKnownColors.White;
+            }
+        }
+
+        private void ExcelQueryCellInfo(ExcelQueryCellInfoEventArgs excel)
+        {
+            if (excel.Cell.Value != string.Empty && excel.ColumnIndex > 0 && double.Parse(excel.Cell.Value) > 500)
+            {
+                excel.Cell.CellStyle.Font.Size = 10;
+                excel.Cell.CellStyle.ColorIndex = ExcelKnownColors.Red;
+                excel.Cell.CellStyle.Font.Color = ExcelKnownColors.White;
             }
         }
 
