@@ -94,7 +94,7 @@ namespace PivotController.Controllers
         public async Task<object> GetPivotValues(FetchData param)
         {
             EngineProperties engine = await GetEngine(param);
-			if (param.IsGroupingUpdated)
+            if (param.IsGroupingUpdated)
             {
                 engine.Data = await GetData(param);
             }
