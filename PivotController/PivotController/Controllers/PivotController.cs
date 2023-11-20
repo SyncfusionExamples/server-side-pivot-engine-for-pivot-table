@@ -123,7 +123,15 @@ namespace PivotController.Controllers
             EngineProperties engine = await GetEngine(param);
             Dictionary<string, object> returnValue = new Dictionary<string, object>();
             returnValue["memberName"] = param.MemberName;
-            returnValue["members"] = JsonConvert.SerializeObject(engine.FieldList[param.MemberName].DateMember);
+            if (engine.FieldList[param.MemberName].IsMembersFilled)
+            {
+                returnValue["members"] = JsonConvert.SerializeObject(engine.FieldList[param.MemberName].Members);
+            }
+            else
+            {
+                await PivotEngine.PerformAction(engine, param);
+                returnValue["members"] = JsonConvert.SerializeObject(engine.FieldList[param.MemberName].Members);
+            }
             return returnValue;
         }
 
