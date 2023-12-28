@@ -1,6 +1,6 @@
 var pivotGridObj = new ej.pivotview.PivotView({
     dataSourceSettings: {
-        url: 'http://localhost:61379/api/pivot/post',
+        url: 'https://localhost:44350/api/pivot/post',
         mode: 'Server',
         type: 'JSON',
         expandAll: false,
