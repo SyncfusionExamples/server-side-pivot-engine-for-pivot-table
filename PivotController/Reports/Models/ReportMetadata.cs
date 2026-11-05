@@ -1,0 +1,18 @@
+namespace PivotController.Reports.Models
+{
+    /// <summary>
+    /// Report metadata returned by the List API (spec §6.3.3) and persisted inside
+    /// the single report JSON file alongside the client-side report payload.
+    /// </summary>
+    public class ReportMetadata
+    {
+        public string ReportId { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Owner { get; set; } = string.Empty;
+        /// <summary>UTC creation time (ISO 8601).</summary>
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        /// <summary>UTC expiry time; null = never expires (spec §6.4.1).</summary>
+        public DateTime? ExpiresAt { get; set; }
+        public long SizeBytes { get; set; }
+    }
+}
